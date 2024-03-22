@@ -1,0 +1,85 @@
+<div class="row g-3 mb-3" ngModelGroup="modification">
+  <div class="col-md-6">
+    <label for="mod_{{ baseIndex }}_{{ modificationIndex }}" class="form-label"
+      >Mod <span class="text-danger">*</span></label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="mod_{{ baseIndex }}_{{ modificationIndex }}"
+      name="mod_{{ baseIndex }}_{{ modificationIndex }}"
+      required
+      [(ngModel)]="modification.mod"
+      #mod="ngModel"
+      [class.invalid]="(mod.touched || isSubmitted) && mod.invalid"
+    />
+  </div>
+  <div class="col-md-6">
+    <label
+      for="dateSigned_{{ baseIndex }}_{{ modificationIndex }}"
+      class="form-label"
+      >Signed Date <span class="text-danger">*</span></label
+    >
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="MM-DD-YYYY"
+        name="dateSigned_{{ baseIndex }}_{{ modificationIndex }}"
+        id="dateSigned_{{ baseIndex }}_{{ modificationIndex }}"
+        [(ngModel)]="modification.dateSigned"
+        ngbDatepicker
+        #d1="ngbDatepicker"
+        required
+        type="text"
+        #dateSigned="ngModel"
+        [class.invalid]="
+          (dateSigned.touched || isSubmitted) && dateSigned.invalid
+        "
+      />
+      <button
+        class="btn btn-outline-secondary bi bi-calendar3"
+        (click)="d1.toggle()"
+        type="button"
+      ></button>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <label
+      for="obligationAmount_{{ baseIndex }}_{{ modificationIndex }}"
+      class="form-label"
+      >Obligation Amount <span class="text-danger">*</span></label
+    >
+    <input
+      type="text"
+      required
+      [(ngModel)]="modification.obligationAmount"
+      class="form-control"
+      id="obligationAmount_{{ baseIndex }}_{{ modificationIndex }}"
+      name="obligationAmount_{{ baseIndex }}_{{ modificationIndex }}"
+      #obligationAmount="ngModel"
+      [class.invalid]="
+        (obligationAmount.touched || isSubmitted) && obligationAmount.invalid
+      "
+    />
+  </div>
+  <div class="col-md-6">
+    <label
+      for="totalValue_{{ baseIndex }}_{{ modificationIndex }}"
+      class="form-label"
+      >Total Value <span class="text-danger">*</span></label
+    >
+    <input
+      type="text"
+      required
+      class="form-control"
+      id="totalValue_{{ baseIndex }}_{{ modificationIndex }}"
+      name="totalValue_{{ baseIndex }}_{{ modificationIndex }}"
+      [(ngModel)]="modification.totalValue"
+      #totalValue="ngModel"
+      [class.invalid]="
+        (totalValue.touched || isSubmitted) && totalValue.invalid
+      "
+    />
+  </div>
+</div>

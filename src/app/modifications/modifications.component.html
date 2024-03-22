@@ -1,0 +1,47 @@
+<div class="col-md-12 mt-2" ngModelGroup="modifications">
+  <ul
+    ngbNav
+    #nav="ngbNav"
+    [(activeId)]="modificationActive"
+    class="nav-tabs"
+    [destroyOnHide]="false"
+    id="parent"
+  >
+    <li
+      [ngbNavItem]="i"
+      *ngFor="let modification of modifications; let i = index"
+    >
+      <a ngbNavLink>
+        {{ i > 0 ? 'Modification ' + i : 'Initial Funding' }}
+
+        <span (click)="removeModificationIndex(i, $event)" class="cross"
+          >X</span
+        >
+      </a>
+      <ng-template ngbNavContent>
+        <app-modification
+          [modification]="modification"
+          [modificationIndex]="i"
+          [baseIndex]="baseIndex"
+        >
+        </app-modification>
+      </ng-template>
+    </li>
+
+    <li class="pt-2">
+      <a
+        href="javascript:void(0);"
+        (click)="addModification($event)"
+        style="padding: 12px 10px;text-decoration:none;"
+      >
+        {{ modifications.length ? '+ Modification' : '+ Initial Funding' }}
+      </a>
+    </li>
+  </ul>
+
+  <div
+    [ngbNavOutlet]="nav"
+    id="modification_{{ baseIndex }}"
+    class="mt-3 modifications"
+  ></div>
+</div>

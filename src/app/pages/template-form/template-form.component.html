@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <form #contractForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            required
+            name="title"
+            #title="ngModel"
+            [class.invalid]="((title.touched || isSubmitted ) && title.invalid)"
+            [(ngModel)]="project.title"
+          />
+        </div>
+  
+        <app-base-periods [basePeriods]="project.basePeriods"></app-base-periods>
+      </div>
+  
+      <div class="mt-3 gap-2 d-flex justify-content-end">
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </form>
+    {{ project | json }}
+  </div>

@@ -1,0 +1,44 @@
+<div class="input-group">
+  <input
+    class="form-control"
+    placeholder="MM-DD-YYYY"
+    [(ngModel)]="inputDate"
+    [class.invalid]="
+    (dateInput.touched || isSubmitted) && dateInput.errors
+    "
+    type="text"
+    mask="00-00-0000"
+    style="z-index: 1"
+    [dropSpecialCharacters]="false"
+    (blur)="onBlur()"
+    (keyup)="onKeyUp()"
+    [disabled]="disable"
+    [readOnly]="readOnly"
+    />
+
+  <!-- [clearIfNotMatch]="true" -->
+
+  <input
+    [disabled]="disable"
+    [readOnly]="readOnly"
+    #dateInput="ngModel"
+    name="{{name}}"
+    id="{{name}}"
+    [(ngModel)]="value"
+    ngbDatepicker
+    #d1="ngbDatepicker"
+    type="text"
+    class="form-control"
+    style="z-index: -1; width: 100%; position: absolute; opacity: 0"
+    (dateSelect)="dateChange($event)"
+  />
+
+  <button
+    [disabled]="disable || readOnly"
+    class="btn btn-outline-secondary bi bi-calendar3"
+    (click)="d1.toggle()"
+    type="button"
+  ></button>
+</div>
+
+<!-- {{ dateInput.errors | json }} {{ dateInput.touched | json }} -->

@@ -1,0 +1,108 @@
+<div class="row g-3" ngModelGroup="basePeriod">
+  <div class="col-md-6">
+    <label for="startDate_{{ baseIndex }}" class="form-label"
+      >Start Date <span class="text-danger">*</span></label
+    >
+    <app-datepicker
+      [name]="'startDate_' + baseIndex"
+      [required]="true"
+      [isSubmitted]="isSubmitted"
+      [(ngModel)]="basePeriod.startDate"
+      (changeEvent)="onStartDateChange($event)"
+      (blurEvent)="onStartDateBlur($event)"
+    ></app-datepicker>
+    <!--<div class="input-group">
+       <input
+        id="startDate_{{ baseIndex }}"
+        class="form-control"
+        placeholder="MM-DD-YYYY"
+        name="startDate_{{ baseIndex }}"
+        [(ngModel)]="basePeriod.startDate"
+        ngbDatepicker
+        #d1="ngbDatepicker"
+        required
+        type="text"
+        #startDate="ngModel"
+        [class.invalid]="
+          (startDate.touched || isSubmitted) && startDate.invalid
+        "
+        (ngModelChange)="dateChange($event)"
+      /> -->
+
+    <!-- 
+        (dateSelect)="dateChange()"
+        (change)="dateChange()" -->
+    <!-- <button
+        class="btn btn-outline-secondary bi bi-calendar3"
+        (click)="d1.toggle()"
+        type="button"
+      ></button> 
+    </div>-->
+  </div>
+  <div class="col-md-6">
+    <label for="endDate_{{ baseIndex }}" class="form-label"
+      >End Date <span class="text-danger">*</span></label
+    >
+    <div class="input-group">
+      <input
+        id="endDate_{{ baseIndex }}"
+        class="form-control"
+        placeholder="MM-DD-YYYY"
+        name="endDate_{{ baseIndex }}"
+        [(ngModel)]="basePeriod.endDate"
+        ngbDatepicker
+        #d2="ngbDatepicker"
+        required
+        type="text"
+        #endDate="ngModel"
+        [afterDate]="basePeriod.startDate"
+        [class.invalid]="(endDate.touched || isSubmitted) && endDate.invalid"
+      />
+      <button
+        class="btn btn-outline-secondary bi bi-calendar3"
+        (click)="d2.toggle()"
+        type="button"
+      ></button>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <label for="totalObligation_{{ baseIndex }}" class="form-label"
+      >Total Obligation <span class="text-danger">*</span></label
+    >
+    <input
+      type="text"
+      [(ngModel)]="basePeriod.totalObligation"
+      class="form-control"
+      id="totalObligation_{{ baseIndex }}"
+      required
+      name="totalObligation_{{ baseIndex }}"
+      #totalObligation="ngModel"
+      [class.invalid]="
+        (totalObligation.touched || isSubmitted) && totalObligation.invalid
+      "
+    />
+  </div>
+  <div class="col-md-6">
+    <label for="periodValue_{{ baseIndex }}" class="form-label"
+      >Period Value <span class="text-danger">*</span></label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="periodValue_{{ baseIndex }}"
+      required
+      name="periodValue_{{ baseIndex }}"
+      [(ngModel)]="basePeriod.periodValue"
+      #periodValue="ngModel"
+      [class.invalid]="
+        (periodValue.touched || isSubmitted) && periodValue.invalid
+      "
+    />
+  </div>
+
+  <app-modifications
+    [baseIndex]="baseIndex"
+    [modifications]="basePeriod.modifications"
+  ></app-modifications>
+</div>

@@ -52,3 +52,34 @@
     padding: .75rem 1rem;
   }
   
+  .bi-calendar3 {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+
+  ////////
+  input.invalid {
+    border: solid 1px red !important;
+  }
+  
+  .cross {
+    width: 16px;
+    height: 16px;
+    background: rgb(20, 19, 19);
+    color: #fff;
+    padding: 2px 0px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 8px;
+    cursor: pointer;
+    display: block;
+    margin-left: 10px;
+    background-color: var(--bs-blue);
+  }
+
+.tabs .nav-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

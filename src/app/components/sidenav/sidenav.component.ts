@@ -7,7 +7,22 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class SidenavComponent implements OnInit {
 
-  @Input() isShowSideNav = false;
+  _isShowSideNav = false;
+  isShowing = false;
+  isHiding = false;
+  @Input() set isShowSideNav(value:boolean) {
+    if(!value) {
+      this.isHiding = true;
+    }else {   
+      this.isShowing = true;
+    }
+    
+    setTimeout(() => {
+      this.isHiding = false;
+      this.isShowing = false;
+      this._isShowSideNav = value;
+    },200)
+  } 
   @Output() onCloseSideNav = new EventEmitter<boolean>();
   constructor() { }
 
