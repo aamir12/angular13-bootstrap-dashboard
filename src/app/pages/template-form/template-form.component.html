@@ -24,3 +24,28 @@
     </form>
     {{ project | json }}
   </div>
+
+
+  <div class="container mt-5">
+    <h3>Reactive Form</h3>
+    <form [formGroup]="reactiveFrm">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="testInput" class="form-label"
+            >Test Input <span class="text-danger">*</span></label
+          >
+        <app-datepicker
+        formControlName="testInput"
+          [required]="true"
+          [isSubmitted]="isSubmitReactive"
+        ></app-datepicker>
+        </div>
+  
+      </div>
+  
+      <button class="btn btn-primary mt-3" (click)="onSubmitReactive()">Submit</button>
+    </form>
+  
+  {{ reactiveFrm.value | json }}
+
+  </div>

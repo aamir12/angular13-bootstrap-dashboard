@@ -7,16 +7,17 @@
     (dateInput.touched || isSubmitted) && dateInput.errors
     "
     type="text"
-    mask="00-00-0000"
+    mask="M0-d0-0000"
     style="z-index: 1"
     [dropSpecialCharacters]="false"
     (blur)="onBlur()"
-    (keyup)="onKeyUp()"
+    (keyup)="onKeyUp($event)"
     [disabled]="disable"
+    #htmlInput
     [readOnly]="readOnly"
     />
-
-  <!-- [clearIfNotMatch]="true" -->
+    
+    <!-- [clearIfNotMatch]="true" -->
 
   <input
     [disabled]="disable"
@@ -41,4 +42,3 @@
   ></button>
 </div>
 
-<!-- {{ dateInput.errors | json }} {{ dateInput.touched | json }} -->

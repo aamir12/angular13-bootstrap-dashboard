@@ -25,14 +25,20 @@ export class BasePeriodsComponent implements OnInit {
   baseActive: number = 0;
   // constructor(private contractService: ContractService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.addOptionPeriodData();
+  }
 
   addOptionPeriod(event: Event) {
     event.preventDefault();
+    this.addOptionPeriodData();
+    // this.contractService.setFormSubmitted(false);
+  }
+
+  addOptionPeriodData() {
     const basePeriod = new BasePeriod();
     this.basePeriods.push(basePeriod);
     this.baseActive = this.basePeriods.length - 1;
-    // this.contractService.setFormSubmitted(false);
   }
 
   removeBaseIndex(index: number, event: Event) {

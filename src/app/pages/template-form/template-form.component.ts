@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { BasePeriodComponent } from 'src/app/base-periods/base-period/base-period.component';
 import { BasePeriodsComponent } from 'src/app/base-periods/base-periods.component';
 import { ContractService } from 'src/app/contract.service';
@@ -23,11 +23,15 @@ export class TemplateFormComponent implements OnInit {
 
   @ViewChild(BasePeriodsComponent)
   basePeriods!: BasePeriodsComponent;
-
+  isSubmitReactive = false;
+  reactiveFrm: FormGroup = this.fb.group({
+    'testInput' : ['']
+  })
   constructor(
     private contractService: ContractService,
     @Inject(DOCUMENT) private document: Document,
-    private formUtility: FormUtilityService
+    private formUtility: FormUtilityService,
+    private fb:FormBuilder
   ) {}
 
   ngOnInit() {
@@ -177,5 +181,9 @@ export class TemplateFormComponent implements OnInit {
         res(hasError);
       }, 0);
     });
+  }
+
+  onSubmitReactive() {
+    this.isSubmitReactive = true;
   }
 }
