@@ -206,11 +206,6 @@ export class DatePickerComponent
     const [month, day, year] = this.inputDate.split('-');
     const hasSlash = this.inputDate.includes('-');
 
-    /**
-     *
-     *  ||
-       (!hasSlash && month && !month.startsWith('0') && parseInt(month)>1 && parseInt(month) < 12)
-     */
     if (
       (hasSlash && month && !month.startsWith('0') && parseInt(month)>1 && (parseInt(month) <= 9)) || 
       (!hasSlash && month && !month.startsWith('0') && parseInt(month)>1 && parseInt(month) <= 9 )
