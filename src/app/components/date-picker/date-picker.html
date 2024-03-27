@@ -3,9 +3,7 @@
     class="form-control"
     placeholder="MM-DD-YYYY"
     [(ngModel)]="inputDate"
-    [class.invalid]="
-    (isTouched || isSubmitted) && hasError
-    "
+    [class.invalid]="isInvalid"
     type="text"
     mask="M0-d0-0000"
     style="z-index: 1"

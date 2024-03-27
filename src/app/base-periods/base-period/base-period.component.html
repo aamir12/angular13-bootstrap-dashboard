@@ -5,13 +5,11 @@
     >
     <app-datepicker
       [name]="'startDate_' + baseIndex"
-      [required]="true"
       #startDate = "ngModel"
-      [isSubmitted]="isSubmitted"
       [(ngModel)]="basePeriod.startDate"
-      [errors] ="startDate.errors"
-      [isTouched] ="startDate.touched"
-    ></app-datepicker>
+      [isInvalid]="!!((startDate.touched || isSubmitted) && startDate.errors)"
+      [required]="true"
+      ></app-datepicker>
 
 
 
@@ -75,10 +73,8 @@
       #endDate = "ngModel"
       [name]="'endDate_' + baseIndex"
       [required]="true"
-      [isSubmitted]="isSubmitted"
       [(ngModel)]="basePeriod.endDate"
-      [errors] ="endDate.errors"
-      [isTouched] ="endDate.touched"
+      [isInvalid]="!!((endDate.touched || isSubmitted) && endDate.errors)"
       [afterDate] = "basePeriod.startDate"
       ></app-datepicker>
     </div>

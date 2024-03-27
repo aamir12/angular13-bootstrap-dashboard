@@ -45,7 +45,7 @@ const noop = () => {};
   ],
 })
 export class DatePickerComponent
-  implements ControlValueAccessor, Validator, AfterViewInit, OnChanges
+  implements ControlValueAccessor, Validator, AfterViewInit
 {
   //The internal data model
   private innerValue: any = '';
@@ -53,10 +53,8 @@ export class DatePickerComponent
   inputDate = '';
   @Input() name!: string;
   @Input() required: boolean = false;
-  @Input() isSubmitted: boolean = false;
   @Input() readOnly: boolean = false;
-  @Input() errors!: any;
-  @Input() isTouched: boolean | null = false;
+  @Input() isInvalid: boolean  = false;
   @Output() changeEvent = new EventEmitter<string>();
   @Output() blurEvent = new EventEmitter<string>();
   @ViewChild('htmlInput') htmlInput!: ElementRef;
@@ -66,7 +64,6 @@ export class DatePickerComponent
   public onChangeCallback: (_: any) => void = noop;
   public onValidatorChange = () => {};
   inputElement!: HTMLInputElement;
-  hasError = false;
   isFocused = false;
   constructor(private _elementRef: ElementRef) {}
 
@@ -189,7 +186,7 @@ export class DatePickerComponent
   }
 
   validate(c: AbstractControl): ValidationErrors | null {
-    if (!this.value) {
+    if (this.required && !this.value) {
       return {
         invalid: true,
       };
@@ -255,14 +252,7 @@ export class DatePickerComponent
     this.changeEvent.emit(this.value);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['errors']) {
-      this.hasError = false;
-      if (changes['errors'].currentValue) {
-        this.hasError = Object.keys(changes['errors'].currentValue).length > 0;
-      }
-    }
-  }
+ 
 
   @HostListener('document:click', ['$event', '$event.target'])
   public onClick(event: MouseEvent, targetElement: HTMLElement): void {
