@@ -6,11 +6,17 @@
     <app-datepicker
       [name]="'startDate_' + baseIndex"
       [required]="true"
+      #startDate = "ngModel"
       [isSubmitted]="isSubmitted"
       [(ngModel)]="basePeriod.startDate"
-      (changeEvent)="onStartDateChange($event)"
-      (blurEvent)="onStartDateBlur($event)"
+      [errors] ="startDate.errors"
+      [isTouched] ="startDate.touched"
     ></app-datepicker>
+
+
+
+    <!-- (changeEvent)="onStartDateChange($event)"
+      (blurEvent)="onStartDateBlur($event)" -->
     <!--<div class="input-group">
        <input
         id="startDate_{{ baseIndex }}"
@@ -66,13 +72,17 @@
     </div> -->
 
     <app-datepicker
+      #endDate = "ngModel"
       [name]="'endDate_' + baseIndex"
       [required]="true"
       [isSubmitted]="isSubmitted"
       [(ngModel)]="basePeriod.endDate"
-      [afterDate]="basePeriod.startDate"
-    ></app-datepicker>
-  </div>
+      [errors] ="endDate.errors"
+      [isTouched] ="endDate.touched"
+      [afterDate] = "basePeriod.startDate"
+      ></app-datepicker>
+    </div>
+    <!-- [afterDateInput]="basePeriod.startDate" -->
 
   <div class="col-md-6">
     <label for="totalObligation_{{ baseIndex }}" class="form-label"

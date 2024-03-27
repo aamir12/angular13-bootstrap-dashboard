@@ -98,10 +98,12 @@ export class TemplateFormComponent implements OnInit {
     // console.log(this.modificationControl);
     this.contractService.setFormSubmitted(true);
     this.checkTotalObligation();
+    
+
     // this.formUtility.addError(
     //   this.basePeriodControl,
-    //   'totalObligation_1',
-    //   'custom'
+    //   `endDate_0`,
+    //   'endDateError'
     // );
 
     const hasError = await this.openInvalidTab();

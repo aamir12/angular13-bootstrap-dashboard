@@ -7,7 +7,8 @@
     [destroyOnHide]="false"
     id="parent"
   >
-    <li
+    <ng-container *ngIf="modifications.length">
+      <li
       [ngbNavItem]="i"
       *ngFor="let modification of modifications; let i = index"
     >
@@ -27,6 +28,8 @@
         </app-modification>
       </ng-template>
     </li>
+    </ng-container>
+    
 
     <li class="pt-2">
       <a

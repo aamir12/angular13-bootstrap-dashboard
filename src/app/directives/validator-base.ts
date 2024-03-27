@@ -19,7 +19,6 @@ export class ValidatorBaseDirective implements OnChanges {
     if (this.inputs.some((input) => input in changes) && this.onChange) {
       setTimeout(() => {
         this.onChange();
-
       },0)
     }
   }

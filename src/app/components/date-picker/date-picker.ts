@@ -8,6 +8,10 @@ import {
   EventEmitter,
   ElementRef,
   AfterViewInit,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -19,7 +23,7 @@ import {
   FormControl,
   NgModel,
 } from '@angular/forms';
-import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
 const noop = () => {};
 
@@ -41,7 +45,7 @@ const noop = () => {};
   ],
 })
 export class DatePickerComponent
-  implements ControlValueAccessor, Validator, AfterViewInit
+  implements ControlValueAccessor, Validator, AfterViewInit, OnChanges
 {
   //The internal data model
   private innerValue: any = '';
@@ -51,22 +55,23 @@ export class DatePickerComponent
   @Input() required: boolean = false;
   @Input() isSubmitted: boolean = false;
   @Input() readOnly: boolean = false;
-
-  @Input() customValidation: (value: string) => boolean = () => {
-    return true;
-  };
+  @Input() errors!: any;
+  @Input() isTouched: boolean | null = false;
   @Output() changeEvent = new EventEmitter<string>();
   @Output() blurEvent = new EventEmitter<string>();
-  @ViewChild('dateInput') dateInputControl!: NgModel;
   @ViewChild('htmlInput') htmlInput!: ElementRef;
   //Placeholders for the callbacks which are later provided
   //by the Control Value Accessor
-  private onTouchedCallback: () => void = noop;
-  private onChangeCallback: (_: any) => void = noop;
-  input!: HTMLInputElement;
+  public onTouchedCallback: () => void = noop;
+  public onChangeCallback: (_: any) => void = noop;
+  public onValidatorChange = () => {};
+  inputElement!: HTMLInputElement;
+  hasError = false;
+  isFocused = false;
+  constructor(private _elementRef: ElementRef) {}
 
   ngAfterViewInit(): void {
-    this.input = this.htmlInput.nativeElement;
+    this.inputElement = this.htmlInput.nativeElement;
   }
   //get accessor
   get value(): any {
@@ -78,6 +83,7 @@ export class DatePickerComponent
     if (v !== this.innerValue) {
       this.innerValue = v;
       this.onChangeCallback(v);
+      this.onTouchedCallback();
     }
   }
 
@@ -93,7 +99,6 @@ export class DatePickerComponent
     }
 
     this.onTouchedCallback();
-    this.dateInputControl.control.markAsTouched();
     this.blurEvent.emit(this.value);
   }
 
@@ -122,6 +127,9 @@ export class DatePickerComponent
     }
   }
 
+  registerOnValidatorChange(onValidatorChange: () => void) {
+    this.onValidatorChange = onValidatorChange;
+  }
   isValidDate(dateStr: string): boolean {
     if (!dateStr) {
       return false;
@@ -181,41 +189,47 @@ export class DatePickerComponent
   }
 
   validate(c: AbstractControl): ValidationErrors | null {
-    let isValid = true;
-
-    if (this.required && !this.value) {
-      isValid = false;
+    if (!this.value) {
+      return {
+        invalid: true,
+      };
     }
 
-    if (this.value) {
-      isValid = isValid && this.isValidDate(this.value);
-    }
-
-    isValid = isValid && this.customValidation(this.value);
-    return isValid ? null : { invalidDate: true };
+    return null;
   }
 
   dateChange(event: NgbDate) {
     this.inputDate = `${event.month < 10 ? '0' + event.month : event.month}-${
       event.day < 10 ? '0' + event.day : event.day
     }-${event.year}`;
+    this.onChangeCallback(this.value);
+    this.onTouchedCallback();
+    this.onValidatorChange();
     this.changeEvent.emit(this.value);
   }
 
-  onKeyUp(event:KeyboardEvent) {
+  onKeyUp(event: KeyboardEvent) {
     const [month, day, year] = this.inputDate.split('-');
-    const hasSlash = this.inputDate.includes('-');
+    const hasDashChar = this.inputDate.includes('-');
 
     if (
-      (hasSlash && month && !month.startsWith('0') && parseInt(month)>1 && (parseInt(month) <= 9)) || 
-      (!hasSlash && month && !month.startsWith('0') && parseInt(month)>1 && parseInt(month) <= 9 )
-      ) {
+      (hasDashChar &&
+        month &&
+        !month.startsWith('0') &&
+        parseInt(month) >= 1 &&
+        parseInt(month) <= 9) ||
+      (!hasDashChar &&
+        month &&
+        !month.startsWith('0') &&
+        parseInt(month) > 1 &&
+        parseInt(month) <= 9)
+    ) {
       this.inputDate = `0${this.inputDate}`;
-      this.input.setSelectionRange(3, 3);
+      this.inputElement.setSelectionRange(3, 3);
     }
 
     if (
-      hasSlash &&
+      hasDashChar &&
       day &&
       !day.startsWith('0') &&
       ((parseInt(day) >= 1 &&
@@ -226,7 +240,7 @@ export class DatePickerComponent
       this.inputDate = `${this.inputDate.slice(0, 3)}0${this.inputDate.slice(
         3
       )}`;
-      this.input.setSelectionRange(5, 5);
+      this.inputElement.setSelectionRange(5, 5);
     }
 
     if (!this.isValidDate(this.inputDate)) {
@@ -235,6 +249,31 @@ export class DatePickerComponent
     }
 
     this.value = this.inputDate;
+    this.onChangeCallback(this.value);
+    this.onTouchedCallback();
+    this.onValidatorChange();
     this.changeEvent.emit(this.value);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['errors']) {
+      this.hasError = false;
+      if (changes['errors'].currentValue) {
+        this.hasError = Object.keys(changes['errors'].currentValue).length > 0;
+      }
+    }
+  }
+
+  @HostListener('document:click', ['$event', '$event.target'])
+  public onClick(event: MouseEvent, targetElement: HTMLElement): void {
+    if (!targetElement) {
+      return;
+    }
+
+    const clickedInside =
+      this._elementRef.nativeElement.contains(targetElement);
+    if (!clickedInside && this.isFocused) {
+      this.onBlur();
+    }
   }
 }

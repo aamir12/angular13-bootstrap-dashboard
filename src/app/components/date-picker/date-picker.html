@@ -4,24 +4,24 @@
     placeholder="MM-DD-YYYY"
     [(ngModel)]="inputDate"
     [class.invalid]="
-    (dateInput.touched || isSubmitted) && dateInput.errors
+    (isTouched || isSubmitted) && hasError
     "
     type="text"
     mask="M0-d0-0000"
     style="z-index: 1"
-    [dropSpecialCharacters]="false"
-    (blur)="onBlur()"
+    [dropSpecialCharacters]="false" 
     (keyup)="onKeyUp($event)"
+    (click)="isFocused = true"
     [disabled]="disable"
     #htmlInput
     [readOnly]="readOnly"
     />
-    
     <!-- [clearIfNotMatch]="true" -->
 
   <input
     [disabled]="disable"
     [readOnly]="readOnly"
+    [required]="required"
     #dateInput="ngModel"
     name="{{name}}"
     id="{{name}}"
@@ -32,14 +32,14 @@
     class="form-control"
     style="z-index: -1; width: 100%; position: absolute; opacity: 0"
     (dateSelect)="dateChange($event)"
-  />
-
+    />
+    
   <button
     [disabled]="disable || readOnly"
     class="btn btn-outline-secondary bi bi-calendar3"
-    (click)="d1.toggle()"
+    (click)="d1.toggle();isFocused = true;"
     type="button"
   ></button>
 </div>
 
-{{ dateInput.errors | json }}
+

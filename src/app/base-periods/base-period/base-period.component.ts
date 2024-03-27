@@ -13,7 +13,7 @@ import { BasePeriod } from '../../model';
 })
 export class BasePeriodComponent implements OnInit {
   @Input() basePeriod!: BasePeriod;
-  @Input() baseIndex: number = 0;
+  @Input() baseIndex: number = 0; 
   @ViewChild(ModificationsComponent) modifications!: ModificationsComponent;
 
   isSubmitted: boolean = false;
@@ -33,10 +33,6 @@ export class BasePeriodComponent implements OnInit {
     console.log('dateChange', event);
   }
 
-  test() {
-    console.log("Blur changed")
-  }
-
   onStartDateChange(date:string) {
     console.log(date);
     console.log("Start Date Change",this.basePeriod.startDate)
@@ -46,4 +42,6 @@ export class BasePeriodComponent implements OnInit {
     console.log(date);
     console.log("Start Date Blur",this.basePeriod.startDate)
   }
+
+  
 }
