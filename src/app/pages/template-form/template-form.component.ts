@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
 import { BasePeriodComponent } from 'src/app/base-periods/base-period/base-period.component';
 import { BasePeriodsComponent } from 'src/app/base-periods/base-periods.component';
 import { ContractService } from 'src/app/contract.service';
@@ -134,22 +134,6 @@ export class TemplateFormComponent implements OnInit {
     return this.modificationsControl.controls['modification'] as FormGroup;
   }
 
-  // addError() {
-  //   this.formUtility.addError(
-  //     this.basePeriodControl,
-  //     'totalObligation_1',
-  //     'custom'
-  //   );
-  // }
-
-  // removeError() {
-  //   this.formUtility.removeError(
-  //     this.basePeriodControl,
-  //     'totalObligation_1',
-  //     'custom'
-  //   );
-  // }
-
   async openInvalidTab() {
     return new Promise((res, rej) => {
       setTimeout(() => {
@@ -187,5 +171,13 @@ export class TemplateFormComponent implements OnInit {
 
   onSubmitReactive() {
     this.isSubmitReactive = true;
+  }
+
+  setFocus() {
+   this.formUtility.setFocus('startDate_0');
+  }
+
+  basePeriodInput(name:string):FormControl {
+    return (this.basePeriodsControl.controls['basePeriod'] as FormGroup).get(name) as FormControl;
   }
 }

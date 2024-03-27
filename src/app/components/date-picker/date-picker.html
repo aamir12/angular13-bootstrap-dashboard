@@ -9,6 +9,7 @@
     type="text"
     mask="M0-d0-0000"
     style="z-index: 1"
+    id="{{name}}"
     [dropSpecialCharacters]="false" 
     (keyup)="onKeyUp($event)"
     (click)="isFocused = true"
@@ -24,7 +25,7 @@
     [required]="required"
     #dateInput="ngModel"
     name="{{name}}"
-    id="{{name}}"
+    id="{{name}}_hidden"
     [(ngModel)]="value"
     ngbDatepicker
     #d1="ngbDatepicker"
