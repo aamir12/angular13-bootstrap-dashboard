@@ -10,7 +10,7 @@
             required
             name="title"
             #title="ngModel"
-            [class.invalid]="((title.touched || isSubmitted ) && title.invalid)"
+            [class.invalid]="title.touched  && title.invalid"
             [(ngModel)]="project.title"
           />
         </div>
@@ -23,6 +23,11 @@
         <button class="btn btn-primary" type="button" (click)="setFocus()">Focus</button>
       </div>
     </form>
+
+
+    <h3>Form Modal</h3>
+    {{ contractForm.form.value | json }}
+    <h3>Data Modal</h3>
     {{ project | json }}
   </div>
 
@@ -36,8 +41,9 @@
             >Test Input <span class="text-danger">*</span></label
           >
         <app-datepicker
-        formControlName="testInput"
+          formControlName="testInput"
           [required]="true"
+          [isInvalid]="!!(testInput.touched  && testInput.errors)"
         ></app-datepicker>
         </div>
   

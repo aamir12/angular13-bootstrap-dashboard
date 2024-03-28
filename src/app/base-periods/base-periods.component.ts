@@ -23,8 +23,6 @@ export class BasePeriodsComponent implements OnInit {
   basePeriod!: QueryList<BasePeriodComponent>;
 
   baseActive: number = 0;
-  // constructor(private contractService: ContractService) {}
-
   ngOnInit() {
     this.addOptionPeriodData();
   }

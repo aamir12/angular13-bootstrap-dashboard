@@ -1,12 +1,26 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, timer } from 'rxjs';
+import { BasePeriod, Modification, Project } from './model';
 
 @Injectable()
 export class ContractService {
-  private isSubmitted = new BehaviorSubject<boolean>(false);
-  isSubmitted$ = this.isSubmitted.asObservable();
+  //share this data among all component
+  project = new Project(); 
+  
 
-  setFormSubmitted(value: boolean) {
-    this.isSubmitted.next(value);
+  getBasePeriods(): BasePeriod[] {
+    return this.project.basePeriods as BasePeriod[];
   }
+
+  getBasePeriod(basePeriodIndex: number): BasePeriod {
+    return this.project.basePeriods[basePeriodIndex] as BasePeriod;
+  }
+
+  getModifications(basePeriodIndex: number): Modification[] {
+    return this.project.basePeriods[basePeriodIndex].modifications as Modification[];
+  }
+
+  getModification(basePeriodIndex: number,modificationIndex:number): Modification {
+    return this.project.basePeriods[basePeriodIndex].modifications[modificationIndex] as Modification;
+  }
+
 }

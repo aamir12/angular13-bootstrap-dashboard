@@ -11,7 +11,7 @@
       required
       [(ngModel)]="modification.mod"
       #mod="ngModel"
-      [class.invalid]="(mod.touched || isSubmitted) && mod.invalid"
+      [class.invalid]="mod.touched  && mod.invalid"
     />
   </div>
   <div class="col-md-6">
@@ -20,7 +20,7 @@
       class="form-label"
       >Signed Date <span class="text-danger">*</span></label
     >
-    <div class="input-group">
+    <!-- <div class="input-group">
       <input
         class="form-control"
         placeholder="MM-DD-YYYY"
@@ -33,7 +33,7 @@
         type="text"
         #dateSigned="ngModel"
         [class.invalid]="
-          (dateSigned.touched || isSubmitted) && dateSigned.invalid
+          dateSigned.touched && dateSigned.invalid
         "
       />
       <button
@@ -41,7 +41,15 @@
         (click)="d1.toggle()"
         type="button"
       ></button>
-    </div>
+    </div> -->
+
+    <app-datepicker
+      [name]="'dateSigned_'+baseIndex+'_'+modificationIndex"
+      [(ngModel)]="modification.dateSigned"
+      #dateSigned="ngModel"
+      [isInvalid]="!!(dateSigned.touched  && dateSigned.errors)"
+      [required]="true"
+      ></app-datepicker>
   </div>
 
   <div class="col-md-6">
@@ -59,7 +67,7 @@
       name="obligationAmount_{{ baseIndex }}_{{ modificationIndex }}"
       #obligationAmount="ngModel"
       [class.invalid]="
-        (obligationAmount.touched || isSubmitted) && obligationAmount.invalid
+        obligationAmount.touched && obligationAmount.invalid
       "
     />
   </div>
@@ -78,7 +86,7 @@
       [(ngModel)]="modification.totalValue"
       #totalValue="ngModel"
       [class.invalid]="
-        (totalValue.touched || isSubmitted) && totalValue.invalid
+        totalValue.touched && totalValue.invalid
       "
     />
   </div>
