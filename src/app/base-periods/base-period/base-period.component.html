@@ -7,7 +7,7 @@
       [name]="'startDate_' + baseIndex"
       #startDate = "ngModel"
       [(ngModel)]="basePeriod.startDate"
-      [isInvalid]="!!((startDate.touched || isSubmitted) && startDate.errors)"
+      [isInvalid]="!!(startDate.touched  && startDate.errors)"
       [required]="true"
       ></app-datepicker>
 
@@ -74,7 +74,7 @@
       [name]="'endDate_' + baseIndex"
       [required]="true"
       [(ngModel)]="basePeriod.endDate"
-      [isInvalid]="!!((endDate.touched || isSubmitted) && endDate.errors)"
+      [isInvalid]="!!(endDate.touched  && endDate.errors)"
       [afterDate] = "basePeriod.startDate"
       ></app-datepicker>
     </div>
@@ -93,7 +93,7 @@
       name="totalObligation_{{ baseIndex }}"
       #totalObligation="ngModel"
       [class.invalid]="
-        (totalObligation.touched || isSubmitted) && totalObligation.invalid
+        totalObligation.touched  && totalObligation.invalid
       "
     />
   </div>
@@ -110,7 +110,7 @@
       [(ngModel)]="basePeriod.periodValue"
       #periodValue="ngModel"
       [class.invalid]="
-        (periodValue.touched || isSubmitted) && periodValue.invalid
+        periodValue.touched && periodValue.invalid
       "
     />
   </div>

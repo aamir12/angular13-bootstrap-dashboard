@@ -11,23 +11,10 @@ import { BasePeriod } from '../../model';
   styleUrls: ['./base-period.component.css'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgModelGroup }],
 })
-export class BasePeriodComponent implements OnInit {
+export class BasePeriodComponent {
   @Input() basePeriod!: BasePeriod;
   @Input() baseIndex: number = 0; 
   @ViewChild(ModificationsComponent) modifications!: ModificationsComponent;
-
-  isSubmitted: boolean = false;
-  constructor(private contractService: ContractService) {}
-
-  ngOnInit() {
-    this.mointerFormSubmit();
-  }
-
-  mointerFormSubmit() {
-    this.contractService.isSubmitted$.subscribe((isSubmit) => {
-      this.isSubmitted = isSubmit;
-    });
-  }
 
   dateChange(event: Event) {
     console.log('dateChange', event);

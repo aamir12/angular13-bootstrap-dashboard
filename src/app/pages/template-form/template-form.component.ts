@@ -13,17 +13,15 @@ import { Project } from 'src/app/model';
   styleUrls: ['./template-form.component.scss'],
   providers: [ContractService],
 })
-export class TemplateFormComponent implements OnInit {
+export class TemplateFormComponent  {
 
   @ViewChild('contractForm') contractForm!: NgForm;
-  project = new Project();
+  project = this.contractService.project;
   baseActive = 0;
   modificationActive = 0;
-  isSubmitted: boolean = false;
-
   @ViewChild(BasePeriodsComponent)
   basePeriods!: BasePeriodsComponent;
-  isSubmitReactive = false;
+
   reactiveFrm: FormGroup = this.fb.group({
     'testInput' : ['']
   })
@@ -33,16 +31,6 @@ export class TemplateFormComponent implements OnInit {
     private formUtility: FormUtilityService,
     private fb:FormBuilder
   ) {}
-
-  ngOnInit() {
-    this.mointerIsSubmit();
-  }
-
-  mointerIsSubmit() {
-    this.contractService.isSubmitted$.subscribe((isSubmit) => {
-      this.isSubmitted = isSubmit;
-    });
-  }
 
   checkTotalObligation() {
     // if (
@@ -94,48 +82,28 @@ export class TemplateFormComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log(this.basePeriodControl);
-    // console.log(this.modificationControl);
-    this.contractService.setFormSubmitted(true);
     this.checkTotalObligation();
     
-
     // this.formUtility.addError(
     //   this.basePeriodControl,
     //   `endDate_0`,
     //   'endDateError'
     // );
-
+    this.contractForm.form.markAllAsTouched();
     const hasError = await this.openInvalidTab();
     if (this.contractForm.invalid || hasError) {
+      
       console.log('invalid', this.contractForm.invalid);
       return;
     }
-    console.log('aamir', this.project);
+    console.log(this.contractForm);
+    console.log('Valid Form Data', this.project);
   }
 
-  get mainForm(): FormGroup {
-    return this.contractForm.form as FormGroup;
-  }
-
-  get basePeriodsControl(): FormGroup {
-    return this.mainForm.controls['basePeriods'] as FormGroup;
-  }
-
-  get basePeriodControl(): FormGroup {
-    return this.basePeriodsControl.controls['basePeriod'] as FormGroup;
-  }
-
-  get modificationsControl(): FormGroup {
-    return this.basePeriodControl.controls['modifications'] as FormGroup;
-  }
-
-  get modificationControl(): FormGroup {
-    return this.modificationsControl.controls['modification'] as FormGroup;
-  }
+  
 
   async openInvalidTab() {
-    return new Promise((res, rej) => {
+    return new Promise((resolve, reject) => {
       setTimeout(() => {
         let hasError = false;
 
@@ -164,13 +132,13 @@ export class TemplateFormComponent implements OnInit {
           }
         }
 
-        res(hasError);
+        resolve(hasError);
       }, 0);
     });
   }
 
   onSubmitReactive() {
-    this.isSubmitReactive = true;
+    this.reactiveFrm.markAllAsTouched();
   }
 
   setFocus() {
@@ -178,6 +146,31 @@ export class TemplateFormComponent implements OnInit {
   }
 
   basePeriodInput(name:string):FormControl {
-    return (this.basePeriodsControl.controls['basePeriod'] as FormGroup).get(name) as FormControl;
+    return this.basePeriodControl.get(name) as FormControl;
+  }
+
+  //Form Controls getter functions
+  get mainForm(): FormGroup {
+    return this.contractForm.form as FormGroup;
+  }
+
+  get basePeriodsControl(): FormGroup {
+    return this.mainForm.controls['basePeriods'] as FormGroup;
+  }
+
+  get basePeriodControl(): FormGroup {
+    return this.basePeriodsControl.controls['basePeriod'] as FormGroup;
+  }
+
+  get modificationsControl(): FormGroup {
+    return this.basePeriodControl.controls['modifications'] as FormGroup;
+  }
+
+  get modificationControl(): FormGroup {
+    return this.modificationsControl.controls['modification'] as FormGroup;
+  }
+
+  get testInput():FormControl {
+    return this.reactiveFrm.get('testInput') as FormControl;
   }
 }
