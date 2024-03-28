@@ -2,13 +2,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, NgModelGroup } from '@angular/forms';
 
 import { Modification } from '../model';
+import { formViewProvider } from '../providers/controlContainer.provider';
 
 @Component({
   selector: 'app-modifications',
   templateUrl: './modifications.component.html',
   styleUrls: ['./modifications.component.css'],
-  viewProviders: [{ provide: ControlContainer, useExisting: NgModelGroup }],
+  viewProviders: [formViewProvider],
 })
+// viewProviders: [{ provide: ControlContainer, useExisting: NgModelGroup }],
 export class ModificationsComponent implements OnInit {
   @Input() modifications: Modification[] = [];
   @Input() baseIndex: number = 0;

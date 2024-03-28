@@ -10,13 +10,15 @@ import { ControlContainer, NgForm } from '@angular/forms';
 import { BasePeriod } from '../model';
 
 import { BasePeriodComponent } from './base-period/base-period.component';
+import { formViewProvider } from '../providers/controlContainer.provider';
 
 @Component({
   selector: 'app-base-periods',
   templateUrl: './base-periods.component.html',
   styleUrls: ['./base-periods.component.css'],
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+  viewProviders: [formViewProvider],
 })
+//viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 export class BasePeriodsComponent implements OnInit {
   @Input() basePeriods: BasePeriod[] = [];
   @ViewChildren(BasePeriodComponent)
