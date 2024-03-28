@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
 import { BasePeriodComponent } from 'src/app/base-periods/base-period/base-period.component';
 import { BasePeriodsComponent } from 'src/app/base-periods/base-periods.component';
@@ -29,7 +29,8 @@ export class TemplateFormComponent  {
     private contractService: ContractService,
     @Inject(DOCUMENT) private document: Document,
     private formUtility: FormUtilityService,
-    private fb:FormBuilder
+    private fb:FormBuilder,
+    private element:ElementRef
   ) {}
 
   checkTotalObligation() {
@@ -94,6 +95,7 @@ export class TemplateFormComponent  {
     if (this.contractForm.invalid || hasError) {
       
       console.log('invalid', this.contractForm.invalid);
+      this.formUtility.scrollToFirstInvalidControl(this.element);
       return;
     }
     console.log(this.contractForm);

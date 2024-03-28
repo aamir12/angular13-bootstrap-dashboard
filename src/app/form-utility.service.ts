@@ -1,12 +1,13 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { ElementRef, Inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-
+import * as $ from 'jquery';
+//declare var $: any; //without using npm i --save-dev @types/jquery
 @Injectable({
   providedIn: 'root',
 })
 export class FormUtilityService {
-  constructor(@Inject(DOCUMENT) private document: Document,) {}
+  constructor(@Inject(DOCUMENT) private document: Document) {}
   addError(formgroup: FormGroup, field: string, error: string) {
     if (!formgroup || !formgroup.controls[field]) {
       return;
@@ -28,9 +29,36 @@ export class FormUtilityService {
     }
   }
 
-  setFocus(name:string) {
-    if(this.document.getElementById(name)) {
+  setFocus(name: string) {
+    if (this.document.getElementById(name)) {
       this.document.getElementById(name)?.focus();
     }
+  }
+
+  scrollToFirstInvalidControl(
+    el: ElementRef,
+    className = '.invalid',
+    isModel = false
+  ) {
+    let firstInvalidControl = $(el.nativeElement).find(`form ${className}`);
+    if (firstInvalidControl && firstInvalidControl.length === 0) {
+      return;
+    }
+    setTimeout(() => {
+      if (isModel) {
+        firstInvalidControl[0].scrollIntoView();
+        firstInvalidControl[0].focus(); //without smooth behavior
+      } else {
+        window.scroll({
+          top:
+            firstInvalidControl[0].getBoundingClientRect().top +
+            window.scrollY -
+            100,
+          left: 0,
+          behavior: 'smooth',
+        });
+        firstInvalidControl[0].focus();
+      }
+    }, 300);
   }
 }
