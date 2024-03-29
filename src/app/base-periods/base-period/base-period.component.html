@@ -95,7 +95,7 @@
       [class.invalid]="
         totalObligation.touched  && totalObligation.invalid
       "
-      [prefix]="basePeriod.totalObligation ? '$ ' : ''"
+      prefix="$ "
       mask="separator.2" thousandSeparator=","
       [showMaskTyped] = "false"
     />
@@ -115,10 +115,10 @@
       [class.invalid]="
         periodValue.touched && periodValue.invalid
       "
-      [prefix]="basePeriod.periodValue ? '$ ' : ''"
       mask="separator.2"
       thousandSeparator=","
-    />
+      prefix="$ "
+      />
   </div>
 
   <app-modifications
