@@ -78,7 +78,7 @@
       [afterDate] = "basePeriod.startDate"
       ></app-datepicker>
     </div>
-    <!-- [afterDateInput]="basePeriod.startDate" -->
+
 
   <div class="col-md-6">
     <label for="totalObligation_{{ baseIndex }}" class="form-label"
@@ -95,6 +95,9 @@
       [class.invalid]="
         totalObligation.touched  && totalObligation.invalid
       "
+      [prefix]="basePeriod.totalObligation ? '$ ' : ''"
+      mask="separator.2" thousandSeparator=","
+      [showMaskTyped] = "false"
     />
   </div>
   <div class="col-md-6">
@@ -112,6 +115,9 @@
       [class.invalid]="
         periodValue.touched && periodValue.invalid
       "
+      [prefix]="basePeriod.periodValue ? '$ ' : ''"
+      mask="separator.2"
+      thousandSeparator=","
     />
   </div>
 

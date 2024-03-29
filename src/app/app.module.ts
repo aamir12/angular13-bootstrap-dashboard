@@ -30,6 +30,7 @@ import { AP3DateAdapter, AP3DateParserFormatter } from './ap3-date-parser-format
 import { NgxMaskModule } from 'ngx-mask';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TemplateFormComponent } from './pages/template-form/template-form.component';
+import { InfoBannerComponent } from './components/info-banner/info-banner.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { TemplateFormComponent } from './pages/template-form/template-form.compo
     ValidatorBaseDirective,
     AfterDateDirective,
     DatePickerComponent,
-    TemplateFormComponent
+    TemplateFormComponent,
+    InfoBannerComponent
   ],
   imports: [
     BrowserModule,

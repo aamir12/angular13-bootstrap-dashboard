@@ -1,6 +1,21 @@
 import { Directive, Input, SimpleChanges } from '@angular/core';
-import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
+import { Validator, AbstractControl, NG_VALIDATORS, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { ValidatorBaseDirective } from './validator-base';
+
+function validAfterDate(afterDate: string):ValidatorFn {
+  return (c: AbstractControl): ValidationErrors | null => {
+    if (
+      c.value &&
+      afterDate &&
+      new Date(c.value) < new Date(afterDate)
+    ) {
+      return {
+        afterDate: true,
+      };
+    }
+    return null;
+  };
+}
 
 @Directive({
   selector: '[afterDate]',
@@ -20,15 +35,6 @@ export class AfterDateDirective
   }
 
   validate(c: AbstractControl): { [key: string]: any } | null {
-    if (
-      c.value &&
-      this.afterDate &&
-      new Date(c.value) < new Date(this.afterDate)
-    ) {
-      return {
-        afterDate: true,
-      };
-    }
-    return null;
+    return validAfterDate(this.afterDate)(c);
   }
 }

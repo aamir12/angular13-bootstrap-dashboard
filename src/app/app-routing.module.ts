@@ -28,7 +28,8 @@ const routes: Routes = [
   {
     path:'templateForm',
     component: TemplateFormComponent
-  }
+  },
+  { path: '**', redirectTo: '/templateForm', pathMatch: 'full' }
 ];
 
 @NgModule({

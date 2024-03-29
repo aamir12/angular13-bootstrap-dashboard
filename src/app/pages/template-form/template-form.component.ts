@@ -21,7 +21,8 @@ export class TemplateFormComponent  {
   modificationActive = 0;
   @ViewChild(BasePeriodsComponent)
   basePeriods!: BasePeriodsComponent;
-
+  features = ['Sub Forms','Built in Validations','Custom Validation','Control Value Accessor','Scroll Effects','Proper Error Handling'];
+  description = 'This page is all about template driven from. It has following features';
   reactiveFrm: FormGroup = this.fb.group({
     'testInput' : ['']
   })
