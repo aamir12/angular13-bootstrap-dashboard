@@ -58,7 +58,7 @@ import { InfoBannerComponent } from './components/info-banner/info-banner.compon
     AfterDateDirective,
     DatePickerComponent,
     TemplateFormComponent,
-    InfoBannerComponent
+    InfoBannerComponent,
   ],
   imports: [
     BrowserModule,
