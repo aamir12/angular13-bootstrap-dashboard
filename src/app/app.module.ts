@@ -31,6 +31,10 @@ import { NgxMaskModule } from 'ngx-mask';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TemplateFormComponent } from './pages/template-form/template-form.component';
 import { InfoBannerComponent } from './components/info-banner/info-banner.component';
+import { ReactiveFormComponent } from './pages/reactive-form/reactive-form.component';
+import { RbasePeriodsComponent } from './pages/reactive-form/rbase-periods/rbase-periods.component';
+import { RmodificationsComponent } from './pages/reactive-form/rbase-periods/rmodifications/rmodifications.component';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +63,9 @@ import { InfoBannerComponent } from './components/info-banner/info-banner.compon
     DatePickerComponent,
     TemplateFormComponent,
     InfoBannerComponent,
+    ReactiveFormComponent,
+    RbasePeriodsComponent,
+    RmodificationsComponent,
   ],
   imports: [
     BrowserModule,

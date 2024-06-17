@@ -5,6 +5,7 @@ import { ContractComponent } from './pages/contract/contract.component';
 import { ContractDetailComponent } from './pages/contract-detail/contract-detail.component';
 import { ContractListComponent } from './pages/contract-list/contract-list.component';
 import { TemplateFormComponent } from './pages/template-form/template-form.component';
+import { ReactiveFormComponent } from './pages/reactive-form/reactive-form.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path:'templateForm',
     component: TemplateFormComponent
+  },
+  {
+    path:'reactiveForm',
+    component: ReactiveFormComponent
   },
   
   { path: '**', redirectTo: '/templateForm', pathMatch: 'full' }

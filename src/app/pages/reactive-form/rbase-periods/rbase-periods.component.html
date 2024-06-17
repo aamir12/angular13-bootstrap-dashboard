@@ -1,0 +1,99 @@
+<div class="col-md-12 mt-3 tabs" formArrayName="basePeriods">
+  <ul
+    ngbNav
+    #nav="ngbNav"
+    [(activeId)]="baseActive"
+    class="nav-tabs"
+    [destroyOnHide]="false"
+    id="basePeriodUI"
+  >
+    <li [ngbNavItem]="baseIndex" *ngFor="let base of basePeriods.controls; let baseIndex = index">
+      <a ngbNavLink>
+        {{ baseIndex === 0 ? 'Base Period' : 'Optional Period ' + baseIndex }}
+        <span (click)="removeBasePeriod(baseIndex, $event)" class="cross">X</span>
+      </a>
+      <ng-template ngbNavContent>
+        <ng-container [formGroupName]="baseIndex">
+          <div class="row g-3" >
+            <div class="col-md-6">
+              <label for="startDate_{{ baseIndex }}" class="form-label"
+                >Start Date <span class="text-danger">*</span></label
+              >
+              <app-datepicker
+                [name]="'startDate_' + baseIndex"
+                formControlName="startDate"
+                [isInvalid]="!!(base.get('startDate')?.touched  && base.get('startDate')?.errors)"
+                [required]="true"
+                ></app-datepicker>
+          
+          
+            </div>
+            <div class="col-md-6">
+              <label  class="form-label" for="endDate_{{ baseIndex }}">
+                End Date <span class="text-danger">*</span>
+                </label>
+              
+          
+              <app-datepicker
+                [name]="'endDate_' + baseIndex"
+                formControlName="endDate"
+                [required]="true"
+                [isInvalid]="!!(base.get('endDate')?.touched  && base.get('endDate')?.errors)"
+                [afterDate] = "base.get('startDate')?.value"
+                ></app-datepicker>
+              </div>
+          
+          
+            <div class="col-md-6">
+              <label 
+              class="form-label" for="totalObligation_{{ baseIndex }}">
+                Total Obligation 
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                id="totalObligation_{{ baseIndex }}"
+                type="text"
+                formControlName="totalObligation"
+                class="form-control"
+                [class.invalid]="base.get('totalObligation')?.touched  && base.get('totalObligation')?.invalid"
+                prefix="$ "
+                mask="separator.2" thousandSeparator=","
+                [showMaskTyped] = "false"
+              />
+            </div>
+            <div class="col-md-6">
+              <label  class="form-label" for="periodValue_{{ baseIndex }}">
+                Period Value
+                 <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="periodValue"
+                id="periodValue_{{ baseIndex }}"
+                [class.invalid]="base.get('periodValue')?.touched && base.get('periodValue')?.invalid"
+                mask="separator.2"
+                thousandSeparator=","
+                prefix="$ "
+                />
+            </div>
+           
+            <app-rmodifications [baseIndex]="baseIndex" [modifications]="modifications(baseIndex)"></app-rmodifications>
+          </div>
+          
+        </ng-container>
+      </ng-template>
+    </li>
+
+    <li class="pt-2">
+      <a
+        href="javascript:void(0);"
+        (click)="addOptionPeriod($event)"
+        style="padding: 12px 10px;text-decoration:none;"
+        >+{{ basePeriods.length > 0 ? 'Option Period' : 'Base Period' }}</a
+      >
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" id="basePeriods" class="mt-3 basePeriods"></div>
+</div>

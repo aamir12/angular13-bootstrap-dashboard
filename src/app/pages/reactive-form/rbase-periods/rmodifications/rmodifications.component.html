@@ -1,0 +1,131 @@
+<div class="col-md-12 mt-2" formArrayName="modifications">
+  <ul
+    ngbNav
+    #nav="ngbNav"
+    [(activeId)]="modificationActive"
+    class="nav-tabs"
+    [destroyOnHide]="false"
+    id="parent"
+  >
+    <ng-container *ngIf="modifications.length">
+      <li
+        [ngbNavItem]="modificationIndex"
+        *ngFor="
+          let modification of modifications.controls;
+          let modificationIndex = index">
+        <a ngbNavLink>
+          {{
+            modificationIndex > 0
+              ? "Modification " + modificationIndex
+              : "Initial Funding"
+          }}
+
+          <span
+            (click)="removeModificationIndex(modificationIndex, $event)"
+            class="cross"
+            >X</span
+          >
+        </a>
+        <ng-template ngbNavContent>
+          <div class="row g-3 mb-3" [formGroupName]="modificationIndex">
+            <div class="col-md-6">
+              <label
+                class="form-label"
+                for="mod_{{ baseIndex }}_{{ modificationIndex }}">Mod <span class="text-danger">*</span>
+                </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="mod"
+                id="mod_{{ baseIndex }}_{{ modificationIndex }}"
+                [class.invalid]="
+                  modification.get('mod')?.touched &&
+                  modification.get('mod')?.invalid
+                "
+              />
+            </div>
+            <div class="col-md-6">
+              <label
+                class="form-label"
+                for="dateSigned_{{ baseIndex }}_{{ modificationIndex }}"
+              >
+                Signed Date
+                <span class="text-danger">*</span>
+              </label>
+
+              <app-datepicker
+                [isInvalid]="
+                  !!(
+                    modification.get('dateSigned')?.touched &&
+                    modification.get('dateSigned')?.errors
+                  )
+                "
+                [required]="true"
+                [name]="'dateSigned_'+ baseIndex +'_'+ modificationIndex "
+              ></app-datepicker>
+            </div>
+
+            <div class="col-md-6">
+              <label
+                class="form-label"
+                for="obligationAmount_{{ baseIndex }}_{{ modificationIndex }}"
+              >
+                Obligation Amount
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="obligationAmount_{{ baseIndex }}_{{ modificationIndex }}"
+                [class.invalid]="
+                  modification.get('obligationAmount')?.touched &&
+                  modification.get('obligationAmount')?.invalid
+                "
+                prefix="$ "
+                mask="separator.2"
+                thousandSeparator=","
+              />
+            </div>
+            <div class="col-md-6">
+              <label
+                class="form-label"
+                for="totalValue_{{ baseIndex }}_{{ modificationIndex }}"
+              >
+                Total Value
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="totalValue_{{ baseIndex }}_{{ modificationIndex }}"
+                [class.invalid]="
+                  modification.get('totalValue')?.touched &&
+                  modification.get('totalValue')?.invalid
+                "
+                prefix="$ "
+                mask="separator.2"
+                thousandSeparator=","
+              />
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ng-container>
+
+    <li class="pt-2">
+      <a
+        href="javascript:void(0);"
+        (click)="addModification($event)"
+        style="padding: 12px 10px; text-decoration: none"
+      >
+        {{ modifications.length ? "+ Modification" : "+ Initial Funding" }}
+      </a>
+    </li>
+  </ul>
+
+  <div
+    [ngbNavOutlet]="nav"
+    id="modification_{{ baseIndex }}"
+    class="mt-3 modifications"
+  ></div>
+</div>
