@@ -34,6 +34,8 @@ import { InfoBannerComponent } from './components/info-banner/info-banner.compon
 import { ReactiveFormComponent } from './pages/reactive-form/reactive-form.component';
 import { RbasePeriodsComponent } from './pages/reactive-form/rbase-periods/rbase-periods.component';
 import { RmodificationsComponent } from './pages/reactive-form/rbase-periods/rmodifications/rmodifications.component';
+import { EventTestingComponent } from './pages/event-testing/event-testing.component';
+import { EventChildComponent } from './pages/event-testing/event-child/event-child.component';
 
 
 @NgModule({
@@ -66,6 +68,8 @@ import { RmodificationsComponent } from './pages/reactive-form/rbase-periods/rmo
     ReactiveFormComponent,
     RbasePeriodsComponent,
     RmodificationsComponent,
+    EventTestingComponent,
+    EventChildComponent,
   ],
   imports: [
     BrowserModule,

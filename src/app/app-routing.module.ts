@@ -6,6 +6,7 @@ import { ContractDetailComponent } from './pages/contract-detail/contract-detail
 import { ContractListComponent } from './pages/contract-list/contract-list.component';
 import { TemplateFormComponent } from './pages/template-form/template-form.component';
 import { ReactiveFormComponent } from './pages/reactive-form/reactive-form.component';
+import { EventTestingComponent } from './pages/event-testing/event-testing.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,10 @@ const routes: Routes = [
     path:'reactiveForm',
     component: ReactiveFormComponent
   },
-  
+  {
+    path:'eventTesting',
+    component: EventTestingComponent
+  },
   { path: '**', redirectTo: '/templateForm', pathMatch: 'full' }
 ];
 
