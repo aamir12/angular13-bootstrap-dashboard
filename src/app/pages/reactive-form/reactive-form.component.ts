@@ -25,6 +25,8 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit  {
     private fb:FormBuilder,
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private document: Document,
+    private element:ElementRef,
+    private formUtility: FormUtilityService,
   ) {}
 
   ngOnInit(): void {
@@ -37,45 +39,56 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit  {
 
   async onSubmit() {
     this.contractForm.form.markAllAsTouched();
-    // const hasError = await this.openInvalidTab();
+    const hasError = await this.openInvalidTab();
+    if (this.contractForm.invalid || hasError) {
+      
+      console.log('invalid', this.contractForm.invalid);
+      this.formUtility.scrollToFirstInvalidControl(this.element);
+      return;
+    }
     console.log(this.form.valid);
     console.log(this.form.value);
   }
 
-  // async openInvalidTab() {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       let hasError = false;
+  async openInvalidTab() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let hasError = false;
 
-  //       const allBasePeriods =
-  //         this.document.querySelectorAll('.app-basePeriod');
-  //       if (allBasePeriods.length > 0) {
-  //         for (let i = 0; i < allBasePeriods.length; i++) {
-  //           let invalidInputs = allBasePeriods[i].querySelectorAll('.invalid');
-  //           if (invalidInputs.length > 0) {
-  //             hasError = true;
-  //             this.rbasePeriods.baseActive = i;
-  //             const allModifications =
-  //               allBasePeriods[i].querySelectorAll('.app-modification');
-  //             if (allModifications.length > 0) {
-  //               for (let j = 0; j < allModifications.length; j++) {
-  //                 const invalidModification =
-  //                   allModifications[j].querySelectorAll('.invalid');
-  //                 if (invalidModification.length > 0) {
-  //                     this.rbasePeriods.basePeriods.at(i).modifications.modificationActive = j;
-  //                     break;
-  //                 }
-  //               }
-  //             }
-  //             break;
-  //           }
-  //         }
-  //       }
+        const allBasePeriods =
+          this.document.querySelectorAll('.app-basePeriod');
+        if (allBasePeriods.length > 0) {
+          for (let i = 0; i < allBasePeriods.length; i++) {
+            let invalidInputs = allBasePeriods[i].querySelectorAll('.invalid');
+            if (invalidInputs.length > 0) {
+              hasError = true;
+              this.rbasePeriods.baseActive = i;
+              const allModifications =
+                allBasePeriods[i].querySelectorAll('.app-modification');
+              if (allModifications.length > 0) {
+                for (let j = 0; j < allModifications.length; j++) {
+                  const invalidModification =
+                    allModifications[j].querySelectorAll('.invalid');
+                  if (invalidModification.length > 0) {
+                      const modification = this.rbasePeriods.rmodifications.find((_,index) => i === index )
 
-  //       resolve(hasError);
-  //     }, 0);
-  //   });
-  // }
+                      if(modification){
+                        modification.modificationActive = j;
+                      }
+
+                      break;
+                  }
+                }
+              }
+              break;
+            }
+          }
+        }
+
+        resolve(hasError);
+      }, 0);
+    });
+  }
 
 
   get title(): FormControl {

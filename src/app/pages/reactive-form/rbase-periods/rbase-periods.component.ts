@@ -1,5 +1,5 @@
-import { Component, Input, ViewChild} from '@angular/core';
-import {  FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {  FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { reactiveViewProvider } from 'src/app/providers/reactiveControlContainer.provider';
 import { RmodificationsComponent } from './rmodifications/rmodifications.component';
 
@@ -11,9 +11,11 @@ import { RmodificationsComponent } from './rmodifications/rmodifications.compone
 })
 export class RbasePeriodsComponent  {
 
-  @ViewChild(RmodificationsComponent) rmodifications!: RmodificationsComponent;
-  @Input() basePeriods: FormArray = new FormArray([]);
+  constructor(private fb: FormBuilder){}
+  @ViewChildren(RmodificationsComponent) rmodifications!: QueryList<RmodificationsComponent>;
+  @Input() basePeriods: FormArray = this.fb.array([]);
   baseActive: number = 0;
+
   
   addOptionPeriod(event:Event) {
     event.preventDefault();
@@ -22,12 +24,12 @@ export class RbasePeriodsComponent  {
   }
 
   basePeriodData() {
-    return new FormGroup({
-      startDate: new FormControl(''),
-      endDate: new FormControl(''),
-      totalObligation: new FormControl(''),
-      periodValue: new FormControl(''),
-      modifications: new FormArray([]),
+    return this.fb.group({
+      startDate: ['',[Validators.required]],
+      endDate: ['',[Validators.required]],
+      totalObligation: ['',[Validators.required]],
+      periodValue: ['',[Validators.required]],
+      modifications: this.fb.array([]),
     })
   }
 

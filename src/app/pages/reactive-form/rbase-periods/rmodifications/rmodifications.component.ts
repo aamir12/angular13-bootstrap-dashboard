@@ -1,5 +1,5 @@
 import {  Component, Input, OnInit } from '@angular/core';
-import {  FormArray, FormControl, FormGroup } from '@angular/forms';
+import {  FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { reactiveViewProvider } from 'src/app/providers/reactiveControlContainer.provider';
 
 @Component({
@@ -10,8 +10,9 @@ import { reactiveViewProvider } from 'src/app/providers/reactiveControlContainer
 })
 export class RmodificationsComponent {
 
+  constructor(private fb:FormBuilder) {}
   @Input() baseIndex: number = 0;
-  @Input() modifications : FormArray = new FormArray([]);
+  @Input() modifications : FormArray = this.fb.array([]);
   modificationActive: number = 0;
   
 
@@ -22,11 +23,11 @@ export class RmodificationsComponent {
   }
 
   modificationData() {
-    return new FormGroup({
-      mod: new FormControl(''),
-      dateSigned: new FormControl(''),
-      obligationAmount: new FormControl(''),
-      totalValue: new FormControl(''),
+    return this.fb.group({
+      mod: ['',[Validators.required]],
+      dateSigned: ['',[Validators.required]],
+      obligationAmount: ['',[Validators.required]],
+      totalValue: ['',[Validators.required]],
     })
   }
 
