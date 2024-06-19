@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef,  Inject, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormControl,  Validators } from '@angular/forms';
 import { ContractService } from 'src/app/contract.service';
 import { FormUtilityService } from 'src/app/form-utility.service';
 import { RbasePeriodsComponent } from './rbase-periods/rbase-periods.component';
@@ -15,7 +15,6 @@ import { RbasePeriodsComponent } from './rbase-periods/rbase-periods.component';
 export class ReactiveFormComponent implements OnInit, AfterViewInit  {
 
   @ViewChild(RbasePeriodsComponent, {static:true}) rbasePeriods!:RbasePeriodsComponent;
-  @ViewChild('contractForm') contractForm!: NgForm;
   form = this.fb.group({
     title : ['',[Validators.required]],
     basePeriods: this.fb.array([]),
@@ -38,11 +37,11 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit  {
   }
 
   async onSubmit() {
-    this.contractForm.form.markAllAsTouched();
+    this.form.markAllAsTouched();
     const hasError = await this.openInvalidTab();
-    if (this.contractForm.invalid || hasError) {
+    if (this.form.invalid || hasError) {
       
-      console.log('invalid', this.contractForm.invalid);
+      console.log('invalid', this.form.invalid);
       this.formUtility.scrollToFirstInvalidControl(this.element);
       return;
     }
