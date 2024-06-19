@@ -1,6 +1,7 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input, ViewChild} from '@angular/core';
 import {  FormArray, FormControl, FormGroup } from '@angular/forms';
 import { reactiveViewProvider } from 'src/app/providers/reactiveControlContainer.provider';
+import { RmodificationsComponent } from './rmodifications/rmodifications.component';
 
 @Component({
   selector: 'app-rbase-periods',
@@ -10,6 +11,7 @@ import { reactiveViewProvider } from 'src/app/providers/reactiveControlContainer
 })
 export class RbasePeriodsComponent  {
 
+  @ViewChild(RmodificationsComponent) rmodifications!: RmodificationsComponent;
   @Input() basePeriods: FormArray = new FormArray([]);
   baseActive: number = 0;
   
