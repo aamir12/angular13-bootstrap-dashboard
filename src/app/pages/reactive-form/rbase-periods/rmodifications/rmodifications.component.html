@@ -7,7 +7,7 @@
     [destroyOnHide]="false"
     id="parent"
   >
-    <ng-container *ngIf="modifications.length">
+    <ng-container *ngIf="modifications?.length">
       <li
         [ngbNavItem]="modificationIndex"
         *ngFor="
@@ -121,7 +121,7 @@
         (click)="addModification($event)"
         style="padding: 12px 10px; text-decoration: none"
       >
-        {{ modifications.length ? "+ Modification" : "+ Initial Funding" }}
+        {{ modifications?.length ? "+ Modification" : "+ Initial Funding" }}
       </a>
     </li>
   </ul>

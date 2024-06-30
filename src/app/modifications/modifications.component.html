@@ -7,7 +7,7 @@
     [destroyOnHide]="false"
     id="parent"
   >
-    <ng-container *ngIf="modifications.length">
+    <ng-container *ngIf="modifications?.length">
       <li
       [ngbNavItem]="i"
       *ngFor="let modification of modifications; let i = index"
