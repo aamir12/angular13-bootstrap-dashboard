@@ -54,7 +54,7 @@ export class DatePickerComponent
   public disable = false;
   inputDate = '';
   @Input() name!: string;
-  @Input() required: boolean = false;
+  // @Input() required: boolean = false;
   @Input() readOnly: boolean = false;
   @Input() isInvalid: boolean  = false;
   @Output() changeEvent = new EventEmitter<string>();

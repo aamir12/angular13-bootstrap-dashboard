@@ -23,9 +23,9 @@
                 [name]="'startDate_' + baseIndex"
                 formControlName="startDate"
                 [isInvalid]="!!(base.get('startDate')?.touched  && base.get('startDate')?.errors)"
-                [required]="true"
                 ></app-datepicker>
-          
+                
+                <!-- [required]="true" -->
           
             </div>
             <div class="col-md-6">
@@ -34,10 +34,10 @@
                 </label>
               
           
+                <!-- [required]="true" -->
               <app-datepicker
                 [name]="'endDate_' + baseIndex"
                 formControlName="endDate"
-                [required]="true"
                 [isInvalid]="!!(base.get('endDate')?.touched  && base.get('endDate')?.errors)"
                 [afterDate] = "base.get('startDate')?.value"
                 ></app-datepicker>
