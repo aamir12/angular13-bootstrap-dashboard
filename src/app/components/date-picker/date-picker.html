@@ -11,6 +11,7 @@
     [dropSpecialCharacters]="false" 
     (keyup)="onKeyUp($event)"
     (click)="isFocused = true"
+    (blur)="onBlur()"
     [disabled]="disable"
     #htmlInput
     [readOnly]="readOnly"
@@ -31,6 +32,7 @@
     class="form-control"
     style="z-index: -1; width: 100%; position: absolute; opacity: 0"
     (dateSelect)="dateChange($event)"
+    tabindex="-1"
     />
     
   <button

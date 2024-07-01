@@ -37,16 +37,18 @@ const noop = () => {};
       useExisting: forwardRef(() => DatePickerComponent),
       multi: true,
     },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => DatePickerComponent),
-      multi: true,
-    },
+    // {
+    //   provide: NG_VALIDATORS,
+    //   useExisting: forwardRef(() => DatePickerComponent),
+    //   multi: true,
+    // },
   ],
 })
 export class DatePickerComponent
-  implements ControlValueAccessor, Validator, AfterViewInit
+  implements ControlValueAccessor, AfterViewInit
 {
+  //Validator
+
   //The internal data model
   private innerValue: any = '';
   public disable = false;
@@ -185,15 +187,15 @@ export class DatePickerComponent
     return !isNaN(timestamp);
   }
 
-  validate(c: AbstractControl): ValidationErrors | null {
-    if (this.required && !this.value) {
-      return {
-        invalid: true,
-      };
-    }
+  // validate(c: AbstractControl): ValidationErrors | null {
+  //   if (this.required && !this.value) {
+  //     return {
+  //       invalid: true,
+  //     };
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   dateChange(event: NgbDate) {
     this.inputDate = `${event.month < 10 ? '0' + event.month : event.month}-${
