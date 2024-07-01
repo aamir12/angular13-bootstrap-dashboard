@@ -121,7 +121,7 @@
         (click)="addModification($event)"
         style="padding: 12px 10px; text-decoration: none"
       >
-        {{ modifications?.length ? "+ Modification" : "+ Initial Funding" }}
+        {{ modifications && modifications.length ? "+ Modification" : "+ Initial Funding" }}
       </a>
     </li>
   </ul>
