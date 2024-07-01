@@ -64,7 +64,7 @@ export class DatePickerComponent
   //by the Control Value Accessor
   public onTouchedCallback: () => void = noop;
   public onChangeCallback: (_: any) => void = noop;
-  public onValidatorChange = () => {};
+  // public onValidatorChange = () => {};
   inputElement!: HTMLInputElement;
   isFocused = false;
   constructor(private _elementRef: ElementRef) {}
@@ -126,9 +126,9 @@ export class DatePickerComponent
     }
   }
 
-  registerOnValidatorChange(onValidatorChange: () => void) {
-    this.onValidatorChange = onValidatorChange;
-  }
+  // registerOnValidatorChange(onValidatorChange: () => void) {
+  //   this.onValidatorChange = onValidatorChange;
+  // }
   isValidDate(dateStr: string): boolean {
     if (!dateStr) {
       return false;
@@ -203,7 +203,7 @@ export class DatePickerComponent
     }-${event.year}`;
     this.onChangeCallback(this.value);
     this.onTouchedCallback();
-    this.onValidatorChange();
+    // this.onValidatorChange();
     this.changeEvent.emit(this.value);
   }
 
@@ -250,7 +250,7 @@ export class DatePickerComponent
     this.value = this.inputDate;
     this.onChangeCallback(this.value);
     this.onTouchedCallback();
-    this.onValidatorChange();
+    // this.onValidatorChange();
     this.changeEvent.emit(this.value);
   }
 
