@@ -1,0 +1,33 @@
+<mat-form-field appearance="outline" [style.width.%]="100">
+  <mat-label>User</mat-label>
+  <mat-chip-list #selectedCustomerList>
+    <mat-chip *ngFor="let customer of selectedCustomers" [removable]="true" (removed)="removeCustomer(customer)" [selectable]="false">
+      {{ customer.name }}
+      <!-- <i class="material-icons" (click)="removeCustomer(customer)">close</i> -->
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+
+    <input
+      matInput 
+      #userInput
+      [matChipInputFor]="selectedCustomerList"
+      [formControl]="user"
+      type="text" 
+      placeholder="Search User here..." 
+      [matAutocomplete]="customerSugessionPanelRef" 
+       />
+       
+
+  </mat-chip-list>
+  <mat-autocomplete 
+    #customerSugessionPanelRef="matAutocomplete"
+    [displayWith]="displayCustomerName"
+    (optionSelected)="onOptionSelected($event)"
+    (opened)="reorderOptions()">
+    <mat-option *ngFor="let customer of customers$ | async" [value]="customer">
+      <mat-checkbox [checked]="checkedSelectedCustomer(customer)">
+        {{ customer.name }}  
+      </mat-checkbox>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

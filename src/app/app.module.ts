@@ -36,6 +36,10 @@ import { RbasePeriodsComponent } from './pages/reactive-form/rbase-periods/rbase
 import { RmodificationsComponent } from './pages/reactive-form/rbase-periods/rmodifications/rmodifications.component';
 import { EventTestingComponent } from './pages/event-testing/event-testing.component';
 import { EventChildComponent } from './pages/event-testing/event-child/event-child.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AkAutoCompleteComponent } from './pages/ak-auto-complete/ak-auto-complete.component';
+import { MaterialModule } from './modules/material.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -70,6 +74,7 @@ import { EventChildComponent } from './pages/event-testing/event-child/event-chi
     RmodificationsComponent,
     EventTestingComponent,
     EventChildComponent,
+    AkAutoCompleteComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +83,9 @@ import { EventChildComponent } from './pages/event-testing/event-child/event-chi
     FormsModule,
     NgbModule,
     NgxMaskModule.forRoot(),
+    BrowserAnimationsModule,
+    MaterialModule,
+    HttpClientModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: AP3DateAdapter },

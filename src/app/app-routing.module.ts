@@ -7,6 +7,7 @@ import { ContractListComponent } from './pages/contract-list/contract-list.compo
 import { TemplateFormComponent } from './pages/template-form/template-form.component';
 import { ReactiveFormComponent } from './pages/reactive-form/reactive-form.component';
 import { EventTestingComponent } from './pages/event-testing/event-testing.component';
+import { AkAutoCompleteComponent } from './pages/ak-auto-complete/ak-auto-complete.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
   {
     path:'eventTesting',
     component: EventTestingComponent
+  },
+  {
+    path:'autoComplete',
+    component: AkAutoCompleteComponent
   },
   { path: '**', redirectTo: '/templateForm', pathMatch: 'full' }
 ];
