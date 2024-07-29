@@ -17,6 +17,7 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit  {
   @ViewChild(RbasePeriodsComponent, {static:true}) rbasePeriods!:RbasePeriodsComponent;
   form = this.fb.group({
     title : ['',[Validators.required]],
+    users: [[],[Validators.required]],
     basePeriods: this.fb.array([]),
   });
   
@@ -30,6 +31,7 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit  {
 
   ngOnInit(): void {
     this.basePeriods.push(this.rbasePeriods.basePeriodData());  
+    // this.form.get('users')?.patchValue([{"id": 9, "name": "Glenna Reichert"}])
   }
 
   ngAfterViewInit(): void {

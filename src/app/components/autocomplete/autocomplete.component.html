@@ -1,3 +1,4 @@
+
 <mat-form-field appearance="outline" [style.width.%]="100">
   <mat-label>User</mat-label>
   <mat-chip-list #selectedCustomerList>
@@ -14,9 +15,7 @@
       type="text" 
       placeholder="Search User here..." 
       [matAutocomplete]="customerSugessionPanelRef" 
-       />
-       
-
+    />
   </mat-chip-list>
   <mat-autocomplete 
     #customerSugessionPanelRef="matAutocomplete"

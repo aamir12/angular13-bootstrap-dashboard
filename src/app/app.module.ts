@@ -40,6 +40,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkAutoCompleteComponent } from './pages/ak-auto-complete/ak-auto-complete.component';
 import { MaterialModule } from './modules/material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { HttpClientModule } from '@angular/common/http';
     EventTestingComponent,
     EventChildComponent,
     AkAutoCompleteComponent,
+    AutocompleteComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,21 +1,32 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime, filter, Observable, of, startWith } from 'rxjs';
-import { User } from './user.interface';
+import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
+import { debounceTime, filter, Observable, of } from 'rxjs';
+
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { UserService } from './user.service';
+import { User } from 'src/app/pages/ak-auto-complete/user.interface';
+import { UserService } from 'src/app/pages/ak-auto-complete/user.service';
 
 @Component({
-  selector: 'app-ak-auto-complete',
-  templateUrl: './ak-auto-complete.component.html',
-  styleUrls: ['./ak-auto-complete.component.scss']
+  selector: 'app-autocomplete',
+  templateUrl: './autocomplete.component.html',
+  styleUrls: ['./autocomplete.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => AutocompleteComponent),
+      multi: true
+    }
+  ]
 })
-export class AkAutoCompleteComponent implements OnInit {
-
+export class AutocompleteComponent implements OnInit, ControlValueAccessor {
   user = new FormControl('');
   customers$!: Observable<User[]>; 
   selectedCustomers: User[] = [];
   @Input() maxAllowedTags = 0;
+  // @Input() dataCallback: (value: string) => Observable<T[]> = (value: string) => of([]);
+  // @Input() key!: keyof T;
+  // @Input() displayKey!: keyof T;
+
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
   @ViewChild(MatAutocomplete) autoCompleteRef!: MatAutocomplete;
   @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
@@ -31,7 +42,7 @@ export class AkAutoCompleteComponent implements OnInit {
   private _keepPanelOpen() {
     requestAnimationFrame(() => {
       this.customTrigger.openPanel();
-    })
+    });
   }
 
   private _filterCustomer(value: string) {
@@ -46,17 +57,27 @@ export class AkAutoCompleteComponent implements OnInit {
     const customer = event.option.value as User;
     if(this.selectedCustomers.findIndex(c => c.id === customer.id) < 0) {
       this.selectedCustomers.push(customer);
-    }else {
+    } else {
       this.removeCustomer(customer);
     }
 
     this.user.setValue(null);
     this.userInput.nativeElement.value = '';
+    this.onChange(this.selectedCustomers);
+    this.onTouched();
   }
 
   removeCustomer(customer: User) {
     this.selectedCustomers = this.selectedCustomers.filter(c => c.id !== customer.id);
-    this._keepPanelOpen();
+    this._closePanel();
+    this.onChange(this.selectedCustomers);
+    this.onTouched();
+  }
+
+  _closePanel() {
+    requestAnimationFrame(() => {
+      this.customTrigger.closePanel();
+    });
   }
 
   checkedSelectedCustomer(customer: User) {
@@ -69,22 +90,48 @@ export class AkAutoCompleteComponent implements OnInit {
       if(this.selectedCustomers.findIndex(x => x.id === c.id) < 0) {
         newList.push(c);
       }
-    })
+    });
     this.customers$ = of(newList);
   }
 
   ngOnInit(): void {
     this.user.valueChanges
-    .pipe(
-      filter(value => typeof value === 'string'),
-      // startWith(''),
-      debounceTime(1000)
-    )
-    .subscribe((value) => {
-      this._filterCustomer(value);
-    })
+      .pipe(
+        filter(value => typeof value === 'string'),
+        debounceTime(1000)
+      )
+      .subscribe((value) => {
+        this._filterCustomer(value);
+      });
   }
 
+  // ControlValueAccessor methods
+  writeValue(value: User[]): void {
+    if (value) {
+      this.selectedCustomers = value;
+    }
+  }
+
+  onChange: any = () => {};
+  onTouched: any = () => {};
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    if (isDisabled) {
+      this.user.disable();
+    } else {
+      this.user.enable();
+    }
+  }
+
+ 
 }
 
 
