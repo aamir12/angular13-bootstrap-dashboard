@@ -22,6 +22,7 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit  {
     title : ['',[Validators.required]],
     users: [[],[Validators.required]],
     basePeriods: this.fb.array([]),
+    user:[]
   });
   
   getUsersCB !: (value: string) => Observable<User[]>

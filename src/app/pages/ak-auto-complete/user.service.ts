@@ -13,4 +13,8 @@ export class UserService {
   getUsers(str:string):Observable<User[]> {
     return this.http.get<User[]>(`https://jsonplaceholder.typicode.com/users?name_like=${str}`)
   }
+
+  getAllUsers():Observable<User[]> {
+    return this.http.get<User[]>(`https://jsonplaceholder.typicode.com/users`);
+  }
 }

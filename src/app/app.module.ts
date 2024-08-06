@@ -41,6 +41,7 @@ import { AkAutoCompleteComponent } from './pages/ak-auto-complete/ak-auto-comple
 import { MaterialModule } from './modules/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MultiSelectAutoCompleteModule } from './components/autocomplete/multi-select-auto-complete.module';
+import { SingleSelectAutoCompleteModule } from './components/single-autocomplete/single-select-auto-complete.module';
 
 
 
@@ -88,7 +89,8 @@ import { MultiSelectAutoCompleteModule } from './components/autocomplete/multi-s
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    MultiSelectAutoCompleteModule
+    MultiSelectAutoCompleteModule,
+    SingleSelectAutoCompleteModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: AP3DateAdapter },
