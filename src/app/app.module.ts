@@ -40,7 +40,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkAutoCompleteComponent } from './pages/ak-auto-complete/ak-auto-complete.component';
 import { MaterialModule } from './modules/material.module';
 import { HttpClientModule } from '@angular/common/http';
-import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
+import { MultiSelectAutoCompleteModule } from './components/autocomplete/multi-select-auto-complete.module';
+
 
 
 @NgModule({
@@ -76,7 +77,6 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
     EventTestingComponent,
     EventChildComponent,
     AkAutoCompleteComponent,
-    AutocompleteComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +88,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
+    MultiSelectAutoCompleteModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: AP3DateAdapter },

@@ -18,8 +18,13 @@
         </div>
 
         <div class="col-md-6">
-          <label for="description" class="form-label">Users</label>
-          <app-autocomplete formControlName="users"></app-autocomplete>
+          <app-autocomplete 
+            formControlName="users"
+            [displayKey]="'name'"
+            [matchIdKey]="'id'"
+            [getDataCB] = "getUsersCB"
+            [label]="'Users'"
+          ></app-autocomplete>
         </div>
 
 

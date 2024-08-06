@@ -1,30 +1,30 @@
 
-<mat-form-field appearance="outline" [style.width.%]="100">
-  <mat-label>User</mat-label>
-  <mat-chip-list #selectedCustomerList>
-    <mat-chip *ngFor="let customer of selectedCustomers" [removable]="true" (removed)="removeCustomer(customer)" [selectable]="false">
-      {{ customer.name }}
+<mat-form-field [appearance]="appearance" [style.width.%]="100">
+  <mat-label>{{label}}</mat-label>
+  <mat-chip-list #selectedRecordsList>
+    <mat-chip *ngFor="let record of selectedRecords" [removable]="true" (removed)="removeRecord(record)" [selectable]="false">
+      {{ record[this.displayKey] }}
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
 
     <input
       matInput 
       #userInput
-      [matChipInputFor]="selectedCustomerList"
+      [matChipInputFor]="selectedRecordsList"
       [formControl]="user"
       type="text" 
-      placeholder="Search User here..." 
-      [matAutocomplete]="customerSugessionPanelRef" 
+      [placeholder]="placeholder" 
+      [matAutocomplete]="recordSugessionPanelRef" 
     />
   </mat-chip-list>
   <mat-autocomplete 
-    #customerSugessionPanelRef="matAutocomplete"
-    [displayWith]="displayCustomerName"
+    #recordSugessionPanelRef="matAutocomplete"
+    [displayWith]="displayRecordName"
     (optionSelected)="onOptionSelected($event)"
     (opened)="reorderOptions()">
-    <mat-option *ngFor="let customer of customers$ | async" [value]="customer">
-      <mat-checkbox [checked]="checkedSelectedCustomer(customer)">
-        {{ customer.name }}  
+    <mat-option *ngFor="let record of records$ | async" [value]="record">
+      <mat-checkbox [checked]="checkedSelectedRecord(record)">
+        {{ record[this.displayKey] }}  
       </mat-checkbox>
     </mat-option>
   </mat-autocomplete>

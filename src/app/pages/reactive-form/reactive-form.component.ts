@@ -4,6 +4,9 @@ import { FormArray, FormBuilder, FormControl,  Validators } from '@angular/forms
 import { ContractService } from 'src/app/contract.service';
 import { FormUtilityService } from 'src/app/form-utility.service';
 import { RbasePeriodsComponent } from './rbase-periods/rbase-periods.component';
+import { UserService } from '../ak-auto-complete/user.service';
+import { Observable } from 'rxjs';
+import { User } from '../ak-auto-complete/user.interface';
 
 
 @Component({
@@ -21,16 +24,19 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit  {
     basePeriods: this.fb.array([]),
   });
   
+  getUsersCB !: (value: string) => Observable<User[]>
   constructor(
     private fb:FormBuilder,
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private document: Document,
     private element:ElementRef,
     private formUtility: FormUtilityService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.basePeriods.push(this.rbasePeriods.basePeriodData());  
+    this.getUsersCB = this.userService.getUsers.bind(this.userService);
     // this.form.get('users')?.patchValue([{"id": 9, "name": "Glenna Reichert"}])
   }
 

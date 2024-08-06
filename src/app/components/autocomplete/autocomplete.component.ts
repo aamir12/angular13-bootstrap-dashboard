@@ -1,10 +1,9 @@
 import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
 import { debounceTime, filter, Observable, of } from 'rxjs';
 
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { User } from 'src/app/pages/ak-auto-complete/user.interface';
-import { UserService } from 'src/app/pages/ak-auto-complete/user.service';
+import { MatFormFieldAppearance } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-autocomplete',
@@ -18,25 +17,28 @@ import { UserService } from 'src/app/pages/ak-auto-complete/user.service';
     }
   ]
 })
-export class AutocompleteComponent implements OnInit, ControlValueAccessor {
-  user = new FormControl('');
-  customers$!: Observable<User[]>; 
-  selectedCustomers: User[] = [];
-  @Input() maxAllowedTags = 0;
-  // @Input() dataCallback: (value: string) => Observable<T[]> = (value: string) => of([]);
-  // @Input() key!: keyof T;
-  // @Input() displayKey!: keyof T;
-
+export class AutocompleteComponent<T,K extends keyof T> implements OnInit, ControlValueAccessor {
+  @Input() maxAllowedTags = 0; // max tags allowed
+  @Input() getDataCB: (value: string) => Observable<T[]> = (value: string) => of([]); // callback to get data
+  @Input() displayKey!:  K; // key that will display in the text box
+  @Input() matchIdKey!:  K; // key that will use to match unique records: eg. id
+  @Input() placeholder:  string = ''; // placeholder for the text box
+  @Input() label:  string = ''; // label for the text box
+  @Input() appearance:  MatFormFieldAppearance = 'outline'; // appearance for the text box
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
   @ViewChild(MatAutocomplete) autoCompleteRef!: MatAutocomplete;
   @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private userService: UserService) { 
-    this.customers$ = new Observable();
+  user = new FormControl('');
+  records$!: Observable<T[]>; 
+  selectedRecords: T[] = [];
+
+  constructor() { 
+    this.records$ = new Observable();
   }
 
-  displayCustomerName(customer: User) {
-    return customer && customer.name ? customer.name : '';
+  displayRecordName(record: T) {
+    return record && record[this.displayKey] ? record[this.displayKey] as unknown as string : '';
   }
 
   private _keepPanelOpen() {
@@ -45,32 +47,32 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
     });
   }
 
-  private _filterCustomer(value: string) {
-    this.customers$ = this.userService.getUsers(value);
+  private _filterRecords(value: string) {
+    this.records$ = this.getDataCB(value);
   }
 
   onOptionSelected(event: MatAutocompleteSelectedEvent) {
-    if(this.maxAllowedTags > 0 && this.selectedCustomers.length >= this.maxAllowedTags ) {
+    if(this.maxAllowedTags > 0 && this.selectedRecords.length >= this.maxAllowedTags ) {
       return;
     }
     this._keepPanelOpen();
-    const customer = event.option.value as User;
-    if(this.selectedCustomers.findIndex(c => c.id === customer.id) < 0) {
-      this.selectedCustomers.push(customer);
+    const record = event.option.value as T;
+    if(this.selectedRecords.findIndex(c => c[this.matchIdKey] === record[this.matchIdKey]) < 0) {
+      this.selectedRecords.push(record);
     } else {
-      this.removeCustomer(customer);
+      this.removeRecord(record);
     }
 
     this.user.setValue(null);
     this.userInput.nativeElement.value = '';
-    this.onChange(this.selectedCustomers);
+    this.onChange(this.selectedRecords);
     this.onTouched();
   }
 
-  removeCustomer(customer: User) {
-    this.selectedCustomers = this.selectedCustomers.filter(c => c.id !== customer.id);
+  removeRecord(record: T) {
+    this.selectedRecords = this.selectedRecords.filter(c => c[this.matchIdKey] !== record[this.matchIdKey]);
     this._closePanel();
-    this.onChange(this.selectedCustomers);
+    this.onChange(this.selectedRecords);
     this.onTouched();
   }
 
@@ -80,18 +82,18 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
     });
   }
 
-  checkedSelectedCustomer(customer: User) {
-    return this.selectedCustomers.findIndex(c => c.id === customer.id) > -1;
+  checkedSelectedRecord(record: T) {
+    return this.selectedRecords.findIndex(c => c[this.matchIdKey] === record[this.matchIdKey]) > -1;
   }
   
   reorderOptions() {
-    let newList: User[] = [...this.selectedCustomers];
+    let newList: T[] = [...this.selectedRecords];
     this.autoCompleteRef.options.map(c => c.value).forEach(c => {
-      if(this.selectedCustomers.findIndex(x => x.id === c.id) < 0) {
+      if(this.selectedRecords.findIndex(x => x[this.matchIdKey] === c[this.matchIdKey]) < 0) {
         newList.push(c);
       }
     });
-    this.customers$ = of(newList);
+    this.records$ = of(newList);
   }
 
   ngOnInit(): void {
@@ -101,14 +103,14 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
         debounceTime(1000)
       )
       .subscribe((value) => {
-        this._filterCustomer(value);
+        this._filterRecords(value);
       });
   }
 
   // ControlValueAccessor methods
-  writeValue(value: User[]): void {
+  writeValue(value: T[]): void {
     if (value) {
-      this.selectedCustomers = value;
+      this.selectedRecords = value;
     }
   }
 
