@@ -1,6 +1,8 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
-import { debounceTime, lastValueFrom, map, Observable } from 'rxjs';
+import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatSelectChange } from '@angular/material/select';
+import { debounceTime, filter, lastValueFrom, map, Observable, startWith, tap } from 'rxjs';
 import { User } from 'src/app/pages/ak-auto-complete/user.interface';
 import { UserService } from 'src/app/pages/ak-auto-complete/user.service';
 
@@ -26,48 +28,81 @@ export class SingleAutocompleteComponent implements OnInit, ControlValueAccessor
   constructor(private _customerContext: UserService) { }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    if (this._customers.length && this._customers.findIndex(c => c.name === this._custName) < 0) return { invalidCustomer: true };
+    const value = this.user.value;
+    let matchValue = value?.name || undefined;
+    if (this._customers.length && this._customers.findIndex(c => c.name === matchValue) < 0) return { invalidCustomer: true };
     return null;
   }
+
   registerOnValidatorChange?(fn: () => void): void {
 
   }
 
   @Input('type') type: string = 'SELECT';
+  user = new FormControl('');
   customers$: Observable<User[]> = new Observable();
-  disabled: boolean = false;
+  filterCustomers$: Observable<User[]> = new Observable();
   private _customers: User[] = [];
-  private _custName: any = '';
-  private _onChange = (value: any | null) => undefined;
-  private _onTouched = () => { };
-
-  get custName() {
-    return this._custName;
-  }
-  set custName(value: any) {
-    this._custName = value;
-    this._onChange(this._custName);
-    this._onTouched();
-  }
+  public _onChange = (value: any | null) => undefined;
+  public _onTouched = () => { };
 
   writeValue(obj: any): void {
     if (obj) {
-      this._custName = obj;
+      this.user.setValue(obj, { emitEvent: false });
     }
   }
+
   registerOnChange(fn: any): void {
     this._onChange = fn;
   }
+
   registerOnTouched(fn: any): void {
     this._onTouched = fn;
   }
+
   setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    if (isDisabled) {
+      this.user.disable();
+    } else {
+      this.user.enable();
+    }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this._filterCustomer();
-    this._getCustomers();
+    await this._getCustomers();
+    if(this.type === 'AUTO_COMPLETE') {
+      this.setUpSearch();
+    }
+  }
+
+  setUpSearch() {
+    this.filterCustomers$ = this.user.valueChanges
+      .pipe(
+        startWith(''),
+        filter((value): value is string  => typeof value === 'string'),
+        map(value => value ? this._filter(value) : this._customers.slice())
+      );
+  }
+
+  changeInput() {
+    const value = this.user.value;
+    this._onChange(value);
+  }
+
+  onOptionSelected(event: MatAutocompleteSelectedEvent) {
+    const record = event.option.value;
+    // this.user.setValue(record.name);
+    this._onChange(record);
+  }
+
+  displayRecordName(record: any) {
+    return record && record.name ? record.name as unknown as string : '';
+  }
+
+  private _filter(value: string): User[] {
+    const filterValue = value.toLowerCase();
+    return this._customers.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
   private async _getCustomers() {
@@ -77,5 +112,9 @@ export class SingleAutocompleteComponent implements OnInit, ControlValueAccessor
 
   private _filterCustomer() {
     this.customers$ = this._customerContext.getAllUsers();
+  }
+
+  onValueChanged(event: MatSelectChange) {
+    this._onChange(event.value);
   }
 }
